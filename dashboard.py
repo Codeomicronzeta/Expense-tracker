@@ -10,11 +10,10 @@ from mongoengine.queryset.visitor import Q
 from app_mengine import Expense
 import dash_table
 
-
+# Initializing the app
 app = dash.Dash(__name__, requests_pathname_prefix='/app1/')
 
-# Creating a function for creating a dynamic user defined dataframe
-
+# Initializing the app layout
 app.layout = html.Div([
     dcc.DatePickerRange(
         id='my-date-picker-range',
@@ -35,7 +34,7 @@ app.layout = html.Div([
     dcc.Store(id = 'df')
 ])
 
-# Callback for fetching user updated query
+# Callback for fetching user updated query and storing it in the User session memory
 # Callback for Mutiple Output to different components
 @app.callback(
     [Output('df', 'data'),
@@ -46,15 +45,18 @@ app.layout = html.Div([
     Input('table', "page_size")]
 )
 def createDf(start_date, end_date, page_current, page_size):
+    # Function for creating the dataframe from the user defined query
     list_data = []
     date = Expense.objects().filter(Q(Date__gte = start_date) & Q(Date__lte = end_date)).scalar("Date", "Expense")
     for dates in date:
         list_data.append(dates)
     df = pd.DataFrame(list_data, columns=['Date', 'Expense'])
+    
     # returning two objects for two different components
-    return [df.to_json(date_format='iso'), df.iloc[
-        page_current*page_size:(page_current+ 1)*page_size
-    ].to_dict('records')]
+    return [
+            df.to_json(date_format='iso'),
+            df.iloc[page_current*page_size:(page_current+ 1)*page_size].to_dict('records')
+           ]
 
 # Callback for graph
 @app.callback(
@@ -64,12 +66,12 @@ def createDf(start_date, end_date, page_current, page_size):
     Input("df", "data")
 )
 def update_line_chart(start_date, end_date, df):
+    # Reading the dataframe from json format
     df = pd.read_json(df)
     start_date_object = date.fromisoformat(start_date)
     end_date_object = date.fromisoformat(end_date)
-
-    #fig = px.line(data, x=data['Date'][(data['Date'] >= start_date) & (data['Date'] <= end_date)],
-     #y = data['Expense'][(data['Date'] >= start_date) & (data['Date'] <= end_date)])
+    
+    #Plotting the Graph
     fig = px.line(df, x = 'Date', y = 'Expense')
     return fig
 
