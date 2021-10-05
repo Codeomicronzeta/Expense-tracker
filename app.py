@@ -12,13 +12,13 @@ from werkzeug.serving import run_simple
 
 # Initializing the app
 server = Flask(__name__)
-#server.config['DEBUG'] = True
-server.config['SECRET_KEY'] = "2A79D2B6FB5CA5E67E2A51A27DBEA" 
+server.config['SECRET_KEY'] = "The_Secret_Key" 
 bootstrap = Bootstrap(server)
+
 # Creating a dictionary for connection parameters for MongoDB
 server.config['MONGODB_SETTINGS'] = {
-    'db': 'project_1',
-    'host': 'mongodb+srv://jeet_1:demo@cluster0.wjsmx.mongodb.net/project_trial?retryWrites=true&w=majority'
+    'db': 'database_name',
+    'host': 'mongodb+srv://user_name:password@cluster0.wjsmx.mongodb.net/database_name?retryWrites=true&w=majority'
 }
 
 db = MongoEngine(server)
@@ -26,7 +26,6 @@ db = MongoEngine(server)
 
 # Creating a class for expense input
 class Expense(db.Document):
-    #meta = {"collection": "project1"}
     Date = db.DateTimeField(default = datetime.datetime.now)
     Expense = db.FloatField(required = False, min_value = 0)
     Comment = db.StringField(required = False)
