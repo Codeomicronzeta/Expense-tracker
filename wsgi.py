@@ -1,7 +1,7 @@
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.serving import run_simple
 
-from app_mengine import server as flask_app
+from app import server as flask_app
 from dashboard import app as app1
 
 application = DispatcherMiddleware(flask_app, {
