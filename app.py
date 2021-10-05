@@ -18,7 +18,7 @@ bootstrap = Bootstrap(server)
 # Creating a dictionary for connection parameters for MongoDB
 server.config['MONGODB_SETTINGS'] = {
     'db': 'database_name',
-    'host': 'mongodb+srv://user_name:password@cluster0.wjsmx.mongodb.net/database_name?retryWrites=true&w=majority'
+    'host': 'host_url'
 }
 
 db = MongoEngine(server)
