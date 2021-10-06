@@ -6,7 +6,7 @@ The app is built with the help of Flask and Plotly Dash library.<br>
 It uses MongoEngine, a Document Object Mapper to connect the app with the NoSQL database MongoDB for storing and retrieving the data.<br>
 The app also consists of a dashboard created using Plotly Dash where the user can view the data as well as the forecast of the data for the next 7 days graphically.<br>
 
-# File Description
+# Files Description
 `app.py` contains the basic code for setting up the web pages using Flask as well as the connection with the MongoDB database using MongoEngine.<br>
 
 `dashboard.py` contains the code for dashboard used for fetching and displaying the query required by the user.
