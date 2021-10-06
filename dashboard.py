@@ -9,11 +9,12 @@ from flask_mongoengine import MongoEngine
 from mongoengine.queryset.visitor import Q
 from app_mengine import Expense
 import dash_table
+import statsmodels as sm
+from statsmodels.tsa.api import ExponentialSmoothing
+import plotly.graph_objects as go
 
-# Initializing the app
 app = dash.Dash(__name__, requests_pathname_prefix='/app1/')
 
-# Initializing the app layout
 app.layout = html.Div([
     dcc.DatePickerRange(
         id='my-date-picker-range',
@@ -30,11 +31,12 @@ app.layout = html.Div([
         page_size=5,
         page_action='custom'
     ),
-    dcc.Graph(id = "line-chart"),
+    dcc.Graph(id = "line-chart"), 
+    dcc.Graph(id = "forecast"), 
     dcc.Store(id = 'df')
 ])
 
-# Callback for fetching user updated query and storing it in the User session memory
+# Callback for fetching user updated query
 # Callback for Mutiple Output to different components
 @app.callback(
     [Output('df', 'data'),
@@ -45,7 +47,6 @@ app.layout = html.Div([
     Input('table', "page_size")]
 )
 def createDf(start_date, end_date, page_current, page_size):
-    # Function for creating the dataframe from the user defined query
     list_data = []
     date = Expense.objects().filter(Q(Date__gte = start_date) & Q(Date__lte = end_date)).scalar("Date", "Expense")
     for dates in date:
@@ -53,12 +54,11 @@ def createDf(start_date, end_date, page_current, page_size):
     df = pd.DataFrame(list_data, columns=['Date', 'Expense'])
     
     # returning two objects for two different components
-    return [
-            df.to_json(date_format='iso'),
-            df.iloc[page_current*page_size:(page_current+ 1)*page_size].to_dict('records')
-           ]
+    return [df.to_json(date_format='iso'), df.iloc[
+        page_current*page_size:(page_current+ 1)*page_size
+    ].to_dict('records')]
 
-# Callback for graph
+# Callback for original graph
 @app.callback(
     Output("line-chart", "figure"),
     Input("my-date-picker-range", "start_date"),
@@ -66,14 +66,57 @@ def createDf(start_date, end_date, page_current, page_size):
     Input("df", "data")
 )
 def update_line_chart(start_date, end_date, df):
-    # Reading the dataframe from json format
     df = pd.read_json(df)
     start_date_object = date.fromisoformat(start_date)
     end_date_object = date.fromisoformat(end_date)
     
-    #Plotting the Graph
     fig = px.line(df, x = 'Date', y = 'Expense')
     return fig
 
+# Callback for plotting the graph with forecast
+@app.callback(
+    Output("forecast", "figure"),
+    Input("my-date-picker-range", "start_date"),
+    Input("my-date-picker-range", "end_date"),
+    Input("df", "data")
+)
+def update_forecast_chart(start_date, end_date, df):
+    train_data = pd.read_json(df)
+    start_date_object = date.fromisoformat(start_date)
+    end_date_object = date.fromisoformat(end_date)
+
+    train_data.index = train_data.Date
+    train_data.drop(['Date'], axis = 1, inplace = True)
+    #print(train_data.head())
+
+    fit = ExponentialSmoothing(train_data,
+    seasonal_periods = 7,
+    trend="add",
+    seasonal="mul",
+    use_boxcox=True,
+    initialization_method="estimated",
+    ).fit()
+
+    forecast = pd.DataFrame(fit.forecast(7), columns=['Expense'])
+    forecast.index = pd.date_range(start=end_date, periods = 7)
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x = forecast.index, y = forecast.Expense,mode='lines',name='Forecast', 
+    marker = dict(
+            color='Red')))
+    fig.add_trace(go.Scatter(x = train_data.index, y = train_data.Expense, mode='lines',name='Original', 
+    marker = dict(
+            color='Blue')))
+    
+    fig.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="right",
+    x=0.99
+    ))
+    return fig
+
+
 if __name__ == '__main__':
     app.run_server(debug = True)
+
