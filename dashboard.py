@@ -12,10 +12,27 @@ import dash_table
 import statsmodels as sm
 from statsmodels.tsa.api import ExponentialSmoothing
 import plotly.graph_objects as go
+import dash_bootstrap_components as dbc
 
-app = dash.Dash(__name__, requests_pathname_prefix='/app1/')
+app = dash.Dash(__name__, requests_pathname_prefix='/app1/', external_stylesheets=[dbc.themes.BOOTSTRAP])
 
+# Creating a Navigation bar
+navbar = dbc.NavbarSimple(
+    children=[
+        dbc.NavItem(dbc.NavLink("Home", href="Link to Home page"),active = True),
+        dbc.NavItem(dbc.NavLink("Data", href="Link to Add Expense page", active = True)),
+        dbc.NavItem(dbc.NavLink("Dashboard", href="Link to the Dashboard page"),active = True),
+    ],
+    brand = "Navbar",
+    brand_style = {"padding-left":"0", "margin-left":"-73px"},
+    links_left = True,
+    color="Black",
+    dark=True,
+)
+
+# App Layout
 app.layout = html.Div([
+    navbar,
     dcc.DatePickerRange(
         id='my-date-picker-range',
         min_date_allowed=date(1995, 8, 5),
