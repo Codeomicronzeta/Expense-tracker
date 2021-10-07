@@ -1,5 +1,5 @@
 # Expense-tracker
-A simple app which stores the expense of an user and displays the data on a dashboard.
+A simple app which stores the daily expense of an user and displays the data on a dashboard.
 
 # Description
 The app is built with the help of Flask and Plotly Dash library.<br>
