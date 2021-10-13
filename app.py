@@ -37,10 +37,6 @@ class Expense(db.Document):
         }
     ]}
 
-def display_data(from_date, to_date):
-    for obj in Expense.objects:
-        print(obj.date(Q(date__gte = from_date) & Q(date__lte = to_date)), obj.daily_expense(Q(date__gte = from_date) & Q(date__lte = to_date)))
-
 @server.route('/')
 def index():
     return render_template('index.html')
