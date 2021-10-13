@@ -4,6 +4,7 @@ A simple app which stores the daily expense of an user and displays the data on 
 # Description
 The app is built with the help of Flask and Plotly Dash library.<br>
 It uses MongoEngine, a Document Object Mapper to connect the app with the NoSQL database MongoDB for storing and retrieving the data.<br>
+Tha app allows for creating and storing the data in the database as well as displaying the data with option of filtered the data by Date, Expense or Comment.<br>
 The app also consists of a dashboard created using Plotly Dash where the user can view the data as well as the forecast of the data for the next 7 days graphically.<br>
 
 ![Untitled_new (4)](https://user-images.githubusercontent.com/63745797/136266806-d68f3eed-6f4e-47eb-b15d-8082936cabe0.gif)
