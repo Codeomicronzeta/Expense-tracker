@@ -29,6 +29,13 @@ class Expense(db.Document):
     Date = db.DateTimeField(default = datetime.datetime.now)
     Expense = db.FloatField(required = False, min_value = 0)
     Comment = db.StringField(required = False)
+    
+    meta = {'indexes': [
+        {'fields': ['$Comment'],
+         'default_language': 'english',
+         #'weights': {'title': 10, 'content': 2}
+        }
+    ]}
 
 def display_data(from_date, to_date):
     for obj in Expense.objects:
