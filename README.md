@@ -15,4 +15,10 @@ The app also consists of a dashboard created using Plotly Dash where the user ca
 1. The dashboard displays the time series data in a table along with a line chart showing the data as well as the forecast for the next 7 days.
 2. The method used for forecasting the data in Holt Winters Seasonal Exponential Smoothing<br>
 
+`data_ops.py` contains the code for:
+1. Adding the data
+2. Fetching and displaying the data filtered by Date
+3. Fetching and displaying the data filtered by Expense
+4. Fetching and displaying the data filtered by Comment
+
 `wsdgi.py` and `run.py` contains the code for running the Dash app along with the Flask app<br>
