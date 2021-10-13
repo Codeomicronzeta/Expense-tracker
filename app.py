@@ -45,18 +45,6 @@ def display_data(from_date, to_date):
 def index():
     return render_template('index.html')
 
-@server.route('/add_expense', methods = ['GET', 'POST'])
-def add_expense():
-    if request.method == "POST":
-        exp = Expense(
-        date = request.form["date"],
-        daily_expense = request.form["daily_expense"],
-        comment = request.form["comment"]   
-        )
-        exp.save()
-
-    return render_template('add_expense.html')
-
 if __name__ == '__main__':
     server.run(debug = True)
         
