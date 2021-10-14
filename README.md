@@ -7,7 +7,14 @@ It uses MongoEngine, a Document Object Mapper to connect the app with the NoSQL 
 Tha app allows for creating and storing the data in the database as well as displaying the data with option of filtered the data by Date, Expense or Comment.<br>
 The app also consists of a dashboard created using Plotly Dash where the user can view the data as well as the forecast of the data for the next 7 days graphically.<br>
 
-![Untitled_new (4)](https://user-images.githubusercontent.com/63745797/136266806-d68f3eed-6f4e-47eb-b15d-8082936cabe0.gif)
+**Adding Expense:**    
+ ![add_trimmed_gif](https://user-images.githubusercontent.com/63745797/137253217-b1bea64b-f697-4111-876d-22b850b97323.gif)<br>
+
+**Filtering Expense:**
+ ![filter_trimmed_gif](https://user-images.githubusercontent.com/63745797/137253272-f55c3710-f826-4a02-a550-ddeeb0ddf2fc.gif)<br>
+
+**Dashboard:**<br>
+ ![Untitled_new (4)](https://user-images.githubusercontent.com/63745797/136266806-d68f3eed-6f4e-47eb-b15d-8082936cabe0.gif)
 
 # Files Description
 `app.py` contains the basic code for setting up the web pages using Flask as well as the connection with the MongoDB database using MongoEngine.<br>
