@@ -7,7 +7,7 @@ It uses MongoEngine, a Document Object Mapper to connect the app with the NoSQL 
 Tha app allows for creating and storing the data in the database as well as displaying the data with option of filtered the data by Date, Expense or Comment.<br>
 The app also consists of a dashboard created using Plotly Dash where the user can view the data as well as the forecast of the data for the next 7 days graphically.<br>
 
-**Adding Expense:** <br>   
+**Adding Expense:**   
  ![add_trimmed_gif](https://user-images.githubusercontent.com/63745797/137253217-b1bea64b-f697-4111-876d-22b850b97323.gif)<br>
 
 **Filtering Expense:**<br>
